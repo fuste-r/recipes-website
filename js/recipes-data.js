@@ -5,7 +5,6 @@ const RECIPES = [
   {
     id: "pumpkin-pancakes",
     title: "Pumpkin Spice Pancakes",
-    emoji: "🥞",
     tags: ["breakfast", "fall"],
     ingredients: [
       "1 1/2 cups flour",
@@ -28,7 +27,6 @@ const RECIPES = [
   {
     id: "summer-berry-salad",
     title: "Summer Berry Salad",
-    emoji: "🥗",
     tags: ["lunch", "summer"],
     ingredients: [
       "4 cups mixed greens",
@@ -46,7 +44,6 @@ const RECIPES = [
   {
     id: "spring-veggie-pasta",
     title: "Spring Vegetable Pasta",
-    emoji: "🍝",
     tags: ["dinner", "spring"],
     ingredients: [
       "12 oz pasta",
@@ -67,7 +64,6 @@ const RECIPES = [
   {
     id: "winter-beef-stew",
     title: "Hearty Winter Beef Stew",
-    emoji: "🍲",
     tags: ["dinner", "winter"],
     ingredients: [
       "2 lb beef stew meat",
@@ -89,7 +85,6 @@ const RECIPES = [
   {
     id: "pumpkin-pie",
     title: "Classic Pumpkin Pie",
-    emoji: "🥧",
     tags: ["dessert", "fall"],
     ingredients: [
       "1 pie crust",
@@ -112,7 +107,6 @@ const RECIPES = [
   {
     id: "iced-lemonade",
     title: "Fresh Summer Lemonade",
-    emoji: "🍋",
     tags: ["dessert", "summer"],
     ingredients: [
       "1 cup lemon juice",
@@ -130,7 +124,6 @@ const RECIPES = [
   {
     id: "overnight-oats",
     title: "Overnight Oats",
-    emoji: "🥣",
     tags: ["breakfast"],
     ingredients: [
       "1/2 cup rolled oats",
@@ -148,7 +141,6 @@ const RECIPES = [
   {
     id: "grilled-cheese",
     title: "Classic Grilled Cheese",
-    emoji: "🥪",
     tags: ["lunch"],
     ingredients: [
       "2 slices bread",

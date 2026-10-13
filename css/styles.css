@@ -146,11 +146,10 @@ main {
 }
 
 .recipe-card-image {
+  display: block;
+  width: 100%;
   height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3.5rem;
+  object-fit: cover;
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
 }
 

@@ -34,13 +34,31 @@ function initTheme() {
 
 // ---------- Recipe grid ----------
 
+function createRecipeImage(recipe) {
+  const image = document.createElement("img");
+  const title = recipe.title.replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&apos;"
+  })[character]);
+  const hue = [...recipe.title].reduce((total, character) => total + character.charCodeAt(0), 0) % 360;
+  const placeholder = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="hsl(${hue} 48% 78%)"/><stop offset="1" stop-color="hsl(${(hue + 45) % 360} 52% 52%)"/></linearGradient></defs><rect width="640" height="360" fill="url(#bg)"/><circle cx="320" cy="145" r="78" fill="none" stroke="white" stroke-opacity=".72" stroke-width="3"/><circle cx="320" cy="145" r="58" fill="white" fill-opacity=".2"/><text x="320" y="265" text-anchor="middle" fill="white" font-family="sans-serif" font-size="25" font-weight="600">${title}</text></svg>`;
+
+  image.className = "recipe-card-image";
+  image.alt = recipe.title;
+  image.loading = "lazy";
+  image.src = `data:image/svg+xml,${encodeURIComponent(placeholder)}`;
+  return image;
+}
+
 function createRecipeCard(recipe) {
   const card = document.createElement("article");
   card.className = "recipe-card";
   card.dataset.tags = recipe.tags.join(" ");
 
   card.innerHTML = `
-    <div class="recipe-card-image">${recipe.emoji}</div>
     <div class="recipe-card-body">
       <h3>${recipe.title}</h3>
       <div class="recipe-card-tags">
@@ -48,6 +66,7 @@ function createRecipeCard(recipe) {
       </div>
     </div>
   `;
+  card.prepend(createRecipeImage(recipe));
 
   card.addEventListener("click", () => openModal(recipe));
   return card;
