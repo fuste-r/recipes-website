@@ -323,9 +323,9 @@ body.theme-fall {
 
 /* Winter */
 body.theme-winter {
-  --bg-gradient: linear-gradient(135deg, #83a4d4 0%, #b6fbff 50%, #e6f7ff 100%);
-  --accent: #3f6ea5;
-  --accent-dark: #28415f;
+  --bg-gradient: linear-gradient(135deg, #5777a2 0%, #92c4d1 50%, #c7dbe7 100%);
+  --accent: #315c87;
+  --accent-dark: #213d5c;
 }
 
 /* Halloween */
