@@ -26,7 +26,8 @@ Open [js/recipes-data.js](js/recipes-data.js) and add a new object to the `RECIP
 {
   id: "unique-id",
   title: "Recipe Name",
-  emoji: "🍳",
+  image: "images/recipe-name.jpg", // optional uploaded image
+  imageSearch: "recipe name food", // optional Commons search override
   tags: ["breakfast", "fall"], // meal type + optional season
   ingredients: ["..."],
   instructions: ["..."]

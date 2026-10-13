@@ -64,6 +64,7 @@ const RECIPES = [
   {
     id: "winter-beef-stew",
     title: "Hearty Winter Beef Stew",
+    imageSearch: "beef stew food",
     tags: ["dinner", "winter"],
     ingredients: [
       "2 lb beef stew meat",
@@ -85,6 +86,7 @@ const RECIPES = [
   {
     id: "pumpkin-pie",
     title: "Classic Pumpkin Pie",
+    imageSearch: "pumpkin pie food",
     tags: ["dessert", "fall"],
     ingredients: [
       "1 pie crust",
@@ -107,6 +109,7 @@ const RECIPES = [
   {
     id: "iced-lemonade",
     title: "Fresh Summer Lemonade",
+    imageSearch: "lemonade drink",
     tags: ["dessert", "summer"],
     ingredients: [
       "1 cup lemon juice",

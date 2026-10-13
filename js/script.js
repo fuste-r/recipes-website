@@ -34,6 +34,46 @@ function initTheme() {
 
 // ---------- Recipe grid ----------
 
+const recipeImageSearches = new Map();
+
+function searchCommonsImage(title) {
+  if (recipeImageSearches.has(title)) return recipeImageSearches.get(title);
+
+  const params = new URLSearchParams({
+    action: "query",
+    generator: "search",
+    gsrsearch: `${title} filetype:bitmap`,
+    gsrnamespace: "6",
+    gsrlimit: "1",
+    prop: "imageinfo",
+    iiprop: "url|extmetadata",
+    iiurlwidth: "640",
+    format: "json",
+    origin: "*"
+  });
+  const search = fetch(`https://commons.wikimedia.org/w/api.php?${params}`)
+    .then((response) => {
+      if (!response.ok) throw new Error("Image search failed");
+      return response.json();
+    })
+    .then((data) => {
+      const page = Object.values(data.query?.pages || {})[0];
+      const image = page?.imageinfo?.[0];
+      if (!image?.thumburl || !image.descriptionurl) return null;
+
+      const artistMarkup = image.extmetadata?.Artist?.value || "";
+      const artist = new DOMParser()
+        .parseFromString(artistMarkup, "text/html")
+        .body.textContent.trim();
+      const license = image.extmetadata?.LicenseShortName?.value || "";
+      return { url: image.thumburl, pageUrl: image.descriptionurl, artist, license };
+    })
+    .catch(() => null);
+
+  recipeImageSearches.set(title, search);
+  return search;
+}
+
 function createRecipeImage(recipe) {
   const image = document.createElement("img");
   const title = recipe.title.replace(/[&<>"']/g, (character) => ({
@@ -49,7 +89,35 @@ function createRecipeImage(recipe) {
   image.className = "recipe-card-image";
   image.alt = recipe.title;
   image.loading = "lazy";
-  image.src = `data:image/svg+xml,${encodeURIComponent(placeholder)}`;
+  const placeholderUrl = `data:image/svg+xml,${encodeURIComponent(placeholder)}`;
+  image.src = recipe.image || placeholderUrl;
+
+  if (recipe.image) {
+    image.addEventListener("error", () => {
+      image.src = placeholderUrl;
+    }, { once: true });
+    return image;
+  }
+
+  searchCommonsImage(recipe.imageSearch || recipe.title).then((source) => {
+    if (!source || !image.isConnected) return;
+
+    const credit = document.createElement("a");
+    credit.className = "recipe-card-image-credit";
+    credit.href = source.pageUrl;
+    credit.target = "_blank";
+    credit.rel = "noopener noreferrer";
+    credit.textContent = [source.artist, source.license].filter(Boolean).join(" · ") || "Wikimedia Commons";
+    credit.setAttribute("aria-label", `Image credit and license for ${recipe.title}`);
+    credit.addEventListener("click", (event) => event.stopPropagation());
+    image.parentElement.appendChild(credit);
+    image.addEventListener("error", () => {
+      credit.remove();
+      image.src = placeholderUrl;
+    }, { once: true });
+    image.src = source.url;
+  });
+
   return image;
 }
 
@@ -59,6 +127,7 @@ function createRecipeCard(recipe) {
   card.dataset.tags = recipe.tags.join(" ");
 
   card.innerHTML = `
+    <div class="recipe-card-media"></div>
     <div class="recipe-card-body">
       <h3>${recipe.title}</h3>
       <div class="recipe-card-tags">
@@ -66,7 +135,7 @@ function createRecipeCard(recipe) {
       </div>
     </div>
   `;
-  card.prepend(createRecipeImage(recipe));
+  card.querySelector(".recipe-card-media").appendChild(createRecipeImage(recipe));
 
   card.addEventListener("click", () => openModal(recipe));
   return card;
